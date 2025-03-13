@@ -1,5 +1,15 @@
-# Base de code pour le TP-API (R4.A.10)
+# zeldium esnt un wiki pour les joueurs de zelda tears of the kingdom
 
-Base de code pour le **TP-API - Développement d'une interface pour API publique**
+## categorie
+    - creatures
+    - equipment
+    - materials
+    - monster
+    - treasure
 
-Ressource R4.A.10 Compléments Web JavaScript côté client (IUT INFO de Grenoble)
+## utilisation
+    
+    1) choisir une catégorie pour voir son contenue
+    2) rechercher un item en particulier avec la barre de recherche
+    3) system de favoris
+    
