@@ -56,7 +56,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                     const item = categoryInstance.content[0]; 
 
                     divElement.innerHTML = `
-                        <img src="${item.image}" alt="${categoryName}">
+                        <img src="${item.image}" alt="${item.name}">
+                        <h1>${item.name}</h1>
                         <p>${item.description}</p>
                         <p>${item.location}</p>
                     `;
