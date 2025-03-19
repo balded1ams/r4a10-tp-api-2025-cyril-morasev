@@ -23,6 +23,8 @@ header {
 .logo {
     display: flex;
     align-items: center;
+    text-decoration: none;
+    color: black;
 }
 
 .logo img {
@@ -33,10 +35,11 @@ header {
 .search-form {
     display: flex;
     flex-grow: 1;
-    margin: 0 20px;
+    margin: 0 80px;
 }
 
 .search-form input {
+    font-family: 'PoliceZelda', sans-serif;
     flex-grow: 2;
     padding: 5px;
     border: 1px solid #ddd;
@@ -50,6 +53,10 @@ header {
     background-color: #eee;
     cursor: pointer;
     border-radius: 0 3px 3px 0;
+}
+
+.search-form button:hover {
+    border: 1px solid black
 }
 
 .favoris {
