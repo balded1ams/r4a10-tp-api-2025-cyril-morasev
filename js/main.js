@@ -3,8 +3,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         "creatures",
         "equipment",
         "materials",
-        "monsters",
-        "treasure",
     ];
     const category_section = document.querySelector(".choice_category");
     const main_section = document.querySelector("main");
@@ -14,7 +12,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         const category = new Category(name);
         await category.fetchContent();
         const image_url = category.get_image_url();
-
         const category_div = document.createElement("div");
         category_div.classList.add("category_summary");
         category_div.innerHTML = `
