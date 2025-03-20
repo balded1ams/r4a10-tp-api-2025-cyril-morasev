@@ -88,68 +88,93 @@ header {
 main {
     padding: 20px;
     display: flex;
-    gap: 80px;
+    gap: 130px;
+    padding-bottom: 70px;
+    justify-content: center;
 }
 
-.choice_category {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-}
-
-.category-summary {
-    text-align: center;
-}
-
-.category-summary img {
-    height: 100px;
-    display: block;
-    margin: 0 auto 10px;
-}
 
 .li_categories ul{
     display: flex;
     flex-direction: column;
     list-style-type: none;
     margin: 0;
+    padding: 0;
     gap: 10px;
     color: black;
 }
 
 .li_categories ul li a{
     color: black;
-    scroll-behavior: smooth;
 }
-/*
-.category {
-    background-color: #fff;
-    padding: 10px;
-    border: 1px solid #ddd;
+
+
+.choice_category {
+    display: flex;
+    flex-direction: column;
+    gap: 70px;
+    cursor: pointer;
+}
+
+.category_summary h2{
+    margin-top: 0;
+    margin-bottom: 40px;
+}
+
+.elements_container{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    width: fit-content;
+}
+
+.elements_summary img{
+    width: 65%;
+    height: auto;
+
+}
+
+.images_section{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding: 20px;
+}
+
+.div_elements{
+    display: flex;
+    flex-direction: column;
     width: 18%;
+    cursor: pointer;
 }
 
-.category h2 {
-    font-size: 1.2em;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 5px;
-    margin-bottom: 10px;
+.div_elements h3{
+    text-align: center;
 }
 
-.category ul {
-    list-style: none;
-    padding: 0;
+.element_div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
 }
 
-.category ul li {
-    margin-bottom: 5px;
+.div_a{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
 }
 
-.category ul li a {
-    text-decoration: none;
-    color: #007bff;
+.div_a a img{
+    width: 50px;
 }
 
-.category ul li a:hover {
-    text-decoration: underline;
+.element_div img{
+    width: 25%;
+    height: auto;
 }
-*/
+
+.element_div p {
+    width: 50%;
+    text-align: center;
+}
