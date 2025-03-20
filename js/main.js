@@ -6,41 +6,62 @@ document.addEventListener("DOMContentLoaded", async () => {
         "monsters",
         "treasure",
     ];
+    const category_section = document.querySelector(".choice_category");
+    const main_section = document.querySelector("main");
 
-    const categorySection = document.querySelector(".choice_category");
-    const listSection = document.querySelector("main ul");
+    await Promise.all(
+        categories.map(async (name) => {
+        const category = new Category(name);
+        await category.fetchContent();
+        const image_url = category.get_image_url();
 
-    const promises = categories.map(async (categoryName) => {
-        const categoryInstance = new Category(categoryName);
-        await categoryInstance.fetchContent();
-        const imageUrl = categoryInstance.get_image_url();
-
-        const categoryDiv = document.createElement("div");
-        categoryDiv.classList.add("category_summary");
-        categoryDiv.innerHTML = `
-            <img src="${imageUrl}" alt="${categoryName}">
-            <h2>${categoryName}</h2>
+        const category_div = document.createElement("div");
+        category_div.classList.add("category_summary");
+        category_div.innerHTML = `
+            <img src="${image_url}" alt="${name}">
+            <h2>${name}</h2>
         `;
-        
+
+        //gestion du prechargement
         const preloadImages = () => {
             for (let i = 1; i < 21; i++) {
                 const link = document.createElement("link");
                 link.rel = "preload";
                 link.as = "image";
-                link.href = categoryInstance.content[i].image;
+                link.href = category.content[i].image;
                 document.head.appendChild(link);
             }
-            categoryDiv.removeEventListener("mouseenter", preloadImages);
+            category_div.removeEventListener("mouseenter", preloadImages);
         };
-        
-        categoryDiv.addEventListener("mouseenter", preloadImages);
-        categorySection.appendChild(categoryDiv);
+        category_div.addEventListener("mouseenter", preloadImages);
+        //click sur les categories
+        category_div.addEventListener("click", () => {
+            main_section.innerHTML = "";
+            const images_section = document.createElement("section");
+            images_section.classList.add("images_section");
+            //ajoute des iamges
+            category.content.forEach((item) => {
+                const img = document.createElement("img");
+                img.src = item.image;
+                img.alt = item.name;
+                images_section.appendChild(img);
+                //click sur les images
+                img.addEventListener("click", () => {
+                    main_section.innerHTML = "";
+                    const element_section = document.createElement("section");
+                    element_section.classList.add("element_section");
 
-        const listItem = document.createElement("li");
-        listItem.textContent = categoryName;
-        listSection.appendChild(listItem);
-    });
-
-    await Promise.all(promises);
+                    const elementImg = document.createElement("img");
+                    elementImg.src = item.image;
+                    elementImg.alt = item.name;
+                    element_section.appendChild(elementImg);
+                    main_section.appendChild(element_section);
+                });
+            });
+            main_section.appendChild(images_section);
+        });
+        category_section.appendChild(category_div);
+    })
+  );
 });
 
