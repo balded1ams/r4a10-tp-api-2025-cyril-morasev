@@ -37,7 +37,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         main_section.appendChild(images_section);
     };
 
+    //Afficher la page pour chaque élément cliqué
     const loadElement = (item) => {
+
+        //Méthode qui Permet de vérifier si l'élément est déjà en favori ou non
+        const isFavorite = (name) => {
+            const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+            return favorites.some(item => item.name === name);
+        };
+
         main_section.innerHTML = "";
         const element_div = document.createElement("div");
         element_div.classList.add("element_div");
@@ -48,9 +56,49 @@ document.addEventListener("DOMContentLoaded", async () => {
         const a_favoris = document.createElement("a");
         a_favoris.href = "#";
         const img_favoris = document.createElement("img");
-        img_favoris.src = "images/14815.png";
+        console.log("suuu"+item.name);
+        if (isFavorite(item.name)) {
+            img_favoris.src = "images/heart.png";
+        }
+        else{
+            img_favoris.src = "images/14815.png";
+        }
         img_favoris.alt = "coeur";
         a_favoris.appendChild(img_favoris);
+        a_favoris.classList.add("a_favoris");
+        
+
+
+        //On s'occupe d'ajouter l'élement en favori ou le retirer
+
+        //On va ajouter ou retirer l'élément selon le résultat de isfavorite
+        const toggleFavorite = (item, imgElement) => {
+            let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+        
+            if (isFavorite(item.name)) {
+                // On le retire
+                favorites = favorites.filter(fav => fav.name !== item.name);
+                imgElement.src = "images/14815.png"; 
+                alert("L'élément a été retiré de vos favoris");
+            } else {
+                // Sinon on l'ajoute
+                favorites.push({
+                    name: item.name,
+                    image: item.image
+                });
+                imgElement.src = "images/heart.png"; 
+                alert("L'élément a été ajouté à vos favoris");
+            }
+            localStorage.setItem("favorites", JSON.stringify(favorites));
+        };
+
+        //On gère le clic sur le bouton favoris
+        a_favoris.addEventListener("click", function (event) {
+            event.preventDefault();
+            toggleFavorite(item, img_favoris);
+        });
+
+
 
         const a_return = document.createElement("a");
         a_return.classList.add("a_return");
@@ -89,6 +137,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         element_div.appendChild(elementDrops);
         main_section.appendChild(element_div);
     };
+
+
 
     await Promise.all(
         categories.map(async (name) => {
