@@ -1,11 +1,14 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const categories = [
+    // On stocke ici les noms et objets de catégories
+    const categoryNames = [
         "creatures",
         "equipment",
         "materials",
         "monsters",
         "treasure",
     ];
+    const categories = [];
+
     const category_section = document.querySelector(".choice_category");
     const listSection = document.querySelector("main ul");
     const main_section = document.querySelector("main");
@@ -37,16 +40,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         main_section.appendChild(images_section);
     };
 
-    //Afficher la page pour chaque élément cliqué
     const loadElement = (item) => {
 
-        //Méthode qui Permet de vérifier si l'élément est déjà en favori ou non
         const isFavorite = (name) => {
             const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
             return favorites.some(item => item.name === name);
         };
 
-        //On crée tous les éléments pour afficher l'élément plus en détail
         main_section.innerHTML = "";
         const element_div = document.createElement("div");
         element_div.classList.add("element_div");
@@ -57,38 +57,28 @@ document.addEventListener("DOMContentLoaded", async () => {
         const a_favoris = document.createElement("a");
         a_favoris.href = "#";
         const img_favoris = document.createElement("img");
-        console.log("suuu"+item.name);
         if (isFavorite(item.name)) {
             img_favoris.src = "images/heart.png";
-        }
-        else{
+        } else {
             img_favoris.src = "images/14815.png";
         }
         img_favoris.alt = "coeur";
         a_favoris.appendChild(img_favoris);
         a_favoris.classList.add("a_favoris");
-        
 
-
-        //On s'occupe d'ajouter l'élement en favori ou le retirer
-
-        //On va ajouter ou retirer l'élément selon le résultat de isfavorite
         const toggleFavorite = (item, imgElement) => {
             let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
         
             if (isFavorite(item.name)) {
-                // On le retire
                 favorites = favorites.filter(fav => fav.name !== item.name);
                 imgElement.src = "images/14815.png"; 
                 alert("L'élément a été retiré de vos favoris");
             } else {
-                // Sinon on l'ajoute
                 favorites.push({
                     name: item.name,
                     image: item.image,
                     description: item.description,
                     common_locations: item.common_locations,
-                    
                 });
                 imgElement.src = "images/heart.png"; 
                 alert("L'élément a été ajouté à vos favoris");
@@ -96,22 +86,20 @@ document.addEventListener("DOMContentLoaded", async () => {
             localStorage.setItem("favorites", JSON.stringify(favorites));
         };
 
-        //On gère le clic sur le bouton favoris
         a_favoris.addEventListener("click", function (event) {
             event.preventDefault();
             toggleFavorite(item, img_favoris);
         });
 
-
-       
-        //Suite de la création de tous les éléments pour afficher l'élément plus en détail
         const a_return = document.createElement("a");
         a_return.classList.add("a_return");
         a_return.href = `/${item.category}`;
+
         a_return.addEventListener("click", (event) => {
             event.preventDefault();
             history.pushState({ category: item.category }, "", `/${item.category}`);
-            loadCategory(categories.find((c) => c.name === item.category));
+            const cat = categories.find((c) => c.name === item.category);
+            loadCategory(cat);
         });
 
         const img_in_a = document.createElement("img");
@@ -143,34 +131,31 @@ document.addEventListener("DOMContentLoaded", async () => {
         main_section.appendChild(element_div);
     };
 
-
-
     await Promise.all(
-        categories.map(async (name) => {
+        categoryNames.map(async (name) => {
             const category = new Category(name);
             await category.fetchContent();
+            categories.push(category);
+
             const category_div = document.createElement("div");
             category_div.classList.add("category_summary");
             category_div.innerHTML = `<h2>${name}</h2>`;
             category_div.id = name;
 
-            // Création d'un conteneur spécifique pour cette catégorie
             const elements_container = document.createElement("div");
             elements_container.classList.add("elements_container");
 
-            // Affichage des 5 premiers éléments pour chaque catégorie
+            // Affichage des 5 premiers éléments
             for (let i = 0; i < 5; i++) {
                 const elements_div = document.createElement("div");
                 elements_div.classList.add("elements_summary");
                 const element = category.content[i].image;
                 elements_div.innerHTML = `<img src="${element}" alt="${category.content[i].name}">`;
-
                 elements_container.appendChild(elements_div);
             }
 
             category_div.appendChild(elements_container);
 
-            // Ajout des catégories dans la liste
             const listItem = document.createElement("li");
             const a = document.createElement("a");
             a.href = `/${name}`;
@@ -178,7 +163,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             listItem.appendChild(a);
             listSection.appendChild(listItem);
 
-            // Clic sur une catégorie
+            // Clic sur la catégorie
             category_div.addEventListener("click", () => {
                 history.pushState({ category: name }, "", `/${name}`);
                 loadCategory(category);
@@ -191,12 +176,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.onpopstate = (event) => {
         if (event.state) {
             if (event.state.item) {
-                const category = categories.find((c) => c.name === event.state.category);
-                const item = category.content.find((i) => i.name === event.state.item);
+                const cat = categories.find((c) => c.name === event.state.category);
+                const item = cat.content.find((i) => i.name === event.state.item);
                 loadElement(item);
             } else if (event.state.category) {
-                const category = categories.find((c) => c.name === event.state.category);
-                loadCategory(category);
+                const cat = categories.find((c) => c.name === event.state.category);
+                loadCategory(cat);
             }
         } else {
             main_section.innerHTML = "";
@@ -205,12 +190,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const path = window.location.pathname.split("/").filter(Boolean);
     if (path.length === 1) {
-        const category = categories.find((c) => c.name === path[0]);
-        if (category) loadCategory(category);
+        const cat = categories.find((c) => c.name === path[0]);
+        if (cat) loadCategory(cat);
     } else if (path.length === 2) {
-        const category = categories.find((c) => c.name === path[0]);
-        if (category) {
-            const item = category.content.find((i) => i.name === path[1]);
+        const cat = categories.find((c) => c.name === path[0]);
+        if (cat) {
+            const item = cat.content.find((i) => i.name === path[1]);
             if (item) loadElement(item);
         }
     }
