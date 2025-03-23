@@ -46,6 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             return favorites.some(item => item.name === name);
         };
 
+        //On crée tous les éléments pour afficher l'élément plus en détail
         main_section.innerHTML = "";
         const element_div = document.createElement("div");
         element_div.classList.add("element_div");
@@ -84,7 +85,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                 // Sinon on l'ajoute
                 favorites.push({
                     name: item.name,
-                    image: item.image
+                    image: item.image,
+                    description: item.description,
+                    common_locations: item.common_locations,
+                    
                 });
                 imgElement.src = "images/heart.png"; 
                 alert("L'élément a été ajouté à vos favoris");
@@ -99,7 +103,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
 
-
+       
+        //Suite de la création de tous les éléments pour afficher l'élément plus en détail
         const a_return = document.createElement("a");
         a_return.classList.add("a_return");
         a_return.href = `/${item.category}`;
