@@ -12,20 +12,23 @@ class Category {
             );
             const data = await response.json();
             this.content = data.data;
+        } catch (error) {
+            console.error("Erreur lors de la récupération des données:", error);
+        }
+    }
 
-            if (this.content && this.content.length > 0) {
-                const imageUrl = this.content[0].image;
+    preloadImages() {
+        if (this.content && this.content.length > 0) {
+            for (let i = 0; i < Math.min(20, this.content.length); i++) {
+                const imageUrl = this.content[i].image;
                 const link = document.createElement("link");
                 link.rel = "preload";
                 link.as = "image";
                 link.href = imageUrl;
                 document.head.appendChild(link);
             }
-        } catch (error) {
-            console.error("Erreur lors de la récupération des données:", error);
         }
     }
-
 
     get_image_url() {
         if (this.content && this.content.length > 0) {
@@ -38,3 +41,5 @@ class Category {
         return this.content;
     }
 }
+
+

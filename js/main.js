@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    // On stocke ici les noms et objets de catégories
     const categoryNames = [
         "creatures",
         "equipment",
@@ -132,46 +131,65 @@ document.addEventListener("DOMContentLoaded", async () => {
     };
 
     await Promise.all(
-        categoryNames.map(async (name) => {
-            const category = new Category(name);
-            await category.fetchContent();
-            categories.push(category);
+    categoryNames.map(async (name) => {
+        const category = new Category(name);
+        await category.fetchContent();
+        categories.push(category);
 
-            const category_div = document.createElement("div");
-            category_div.classList.add("category_summary");
-            category_div.innerHTML = `<h2>${name}</h2>`;
-            category_div.id = name;
+        const category_div = document.createElement("div");
+        category_div.classList.add("category_summary");
+        category_div.innerHTML = `<h2>${name}</h2>`;
+        category_div.id = name;
 
-            const elements_container = document.createElement("div");
-            elements_container.classList.add("elements_container");
+        const elements_container = document.createElement("div");
+        elements_container.classList.add("elements_container");
 
-            // Affichage des 5 premiers éléments
-            for (let i = 0; i < 5; i++) {
-                const elements_div = document.createElement("div");
-                elements_div.classList.add("elements_summary");
-                const element = category.content[i].image;
-                elements_div.innerHTML = `<img src="${element}" alt="${category.content[i].name}">`;
-                elements_container.appendChild(elements_div);
+        // Affichage des 5 premiers éléments
+        for (let i = 0; i < 5; i++) {
+            const elements_div = document.createElement("div");
+            elements_div.classList.add("elements_summary");
+            const element = category.content[i].image;
+            elements_div.innerHTML = `<img src="${element}" alt="${category.content[i].name}">`;
+            elements_container.appendChild(elements_div);
+        }
+
+        category_div.appendChild(elements_container);
+
+        const listItem = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = `/${name}`;
+        a.textContent = name;
+        listItem.appendChild(a);
+        listSection.appendChild(listItem);
+
+        // Fonction de préchargement des images de la prochaine page
+        const preloadImages = () => {
+            // Ici on suppose que la prochaine "page" contient les images d'indice 5 à 24
+            for (let i = 5; i < 25; i++) {
+                // Vérification au cas où il n'y aurait pas assez d'images
+                if (category.content[i] && category.content[i].image) {
+                    const link = document.createElement("link");
+                    link.rel = "preload";
+                    link.as = "image";
+                    link.href = category.content[i].image;
+                    document.head.appendChild(link);
+                }
             }
+            category_div.removeEventListener("mouseenter", preloadImages);
+        };
 
-            category_div.appendChild(elements_container);
+        // Lancer le préchargement au survol
+        category_div.addEventListener("mouseenter", preloadImages);
 
-            const listItem = document.createElement("li");
-            const a = document.createElement("a");
-            a.href = `/${name}`;
-            a.textContent = name;
-            listItem.appendChild(a);
-            listSection.appendChild(listItem);
+        // Clic sur la catégorie
+        category_div.addEventListener("click", () => {
+            history.pushState({ category: name }, "", `/${name}`);
+            loadCategory(category);
+        });
 
-            // Clic sur la catégorie
-            category_div.addEventListener("click", () => {
-                history.pushState({ category: name }, "", `/${name}`);
-                loadCategory(category);
-            });
-
-            category_section.appendChild(category_div);
-        })
-    );
+        category_section.appendChild(category_div);
+    })
+);
 
     window.onpopstate = (event) => {
         if (event.state) {
@@ -184,7 +202,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 loadCategory(cat);
             }
         } else {
-            main_section.innerHTML = "";
+            location.reload()
         }
     };
 
