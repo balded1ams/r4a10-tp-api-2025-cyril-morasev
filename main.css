@@ -38,31 +38,49 @@ header {
 }
 
 .search-form {
-    display: flex;
-    flex-grow: 1;
-    margin: 0 80px;
+    position: relative;
 }
 
 .search-form input {
     font-family: 'PoliceZelda', sans-serif;
     flex-grow: 2;
     padding: 5px;
-    border: 1px solid #ddd;
+    border: 0.5px solid grey;
     border-radius: 3px 0 0 3px;
+    width: 260px;
+    outline: none;
 }
 
-.search-form button {
-    padding: 5px 10px;
-    border: 1px solid #ddd;
-    border-left: none;
-    background-color: #eee;
+.ul_recherche{
+    display: none;
+    position: absolute;
+    top: 100%;
+    overflow: auto;
+    max-height: 204px;
+    margin: 0;
+    padding: 0;
+    background-color: #0a053c;
+    width: 100%;
+}
+
+.search-item{
+    color: rgb(224, 209, 173);
     cursor: pointer;
-    border-radius: 0 3px 3px 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-bottom: 1px solid white;
 }
 
-.search-form button:hover {
-    border: 1px solid black
+
+.search-item:hover{
+    background-color: #1a0d6d;
 }
+
+.search-item img{
+    width: 50px;
+}
+
 
 .favoris {
     display: flex;

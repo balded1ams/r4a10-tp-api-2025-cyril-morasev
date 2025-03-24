@@ -1,10 +1,83 @@
 // Attendre que le DOM soit chargé avant d'exécuter le script
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+    const categories = [
+        "creatures",
+        "equipment",
+        "materials",
+        "monsters",
+        "treasure",
+    ];
     
     // Sélection des conteneurs dans le DOM
     const sectionContainer = document.querySelector(".section_container_favoris");
     const favorisContainer = document.querySelector(".favoris-container"); 
+    const searchInput = document.querySelector(".search-form input");
+    const searchForm = document.querySelector(".search-form");
+    const ul_recherche = document.querySelector(".ul_recherche");
+
+    // Création d'un conteneur pour afficher les suggestions de recherche
+    const searchResults = document.createElement("li");
+    searchResults.classList.add("search-results");
+    ul_recherche.appendChild(searchResults);
+
+    let allItems = [];
+
+    try {
+        await Promise.all(
+            categories.map(async (name) => {
+                const category = new Category(name);
+                await category.fetchContent();
+                allItems = allItems.concat(category.content);
+            })
+        );
+        console.log("Données chargées :", allItems);
+    } catch (error) {
+        console.error("Erreur lors du chargement des catégories :", error);
+    }
+
+    // Gestion de la recherche
+    let searchTimeout;
+    searchInput.addEventListener("input", () => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            const query = searchInput.value.toLowerCase().trim();
+            ul_recherche.innerHTML = "";
+
+            if (query.length === 0) {
+                ul_recherche.style.display = "none";
+                return;
+            }
+
+            ul_recherche.style.display = "block";
+
+            const filteredItems = allItems.filter(item => item.name.toLowerCase().includes(query));
+
+            filteredItems.forEach(item => {
+                const resultli = document.createElement("li");
+                resultli.classList.add("search-item");
+                resultli.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="search-img">
+                    <span>${item.name}</span>
+                `;
+                resultli.addEventListener("click", () => {
+                    history.pushState({ category: item.category, item: item.name }, "", `/${item.category}/${item.name}`);
+                    loadElement(item);
+                    ul_recherche.innerHTML = ""; // Vider les résultats après sélection
+                });
+                ul_recherche.appendChild(resultli);
+            });
+        }, 300);
+    });
+
+    // Cacher la barre de résultats quand on clique ailleurs
+    document.addEventListener("click", (event) => {
+        if (!searchForm.contains(event.target)) {
+            ul_recherche.innerHTML = "";
+        }
+    });
+
+
     
     // Récupération des favoris stockés dans le localStorage
     let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
