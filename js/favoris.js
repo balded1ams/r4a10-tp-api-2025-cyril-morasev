@@ -88,8 +88,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
-    // AFFICHAGE DES FAVORIS 
-    
+    //On affiche tous les favoris qu'on vient de recuperer au dessus
     favorites.forEach(item => {
         const div = document.createElement("div");
         div.classList.add("favori-item");
@@ -97,12 +96,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         const div_img_txt = document.createElement("div");
         div_img_txt.classList.add("div_img_txt");
 
-        // Création de l'image de l'élément
         const img = document.createElement("img");
         img.src = item.image;
         img.alt = item.name;
 
-        // Création du bouton pour supprimer l'élément des favoris
         const aHeart = document.createElement("a"); 
         aHeart.href = "#";
         const img_coeur = document.createElement("img");
@@ -110,7 +107,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         img_coeur.src = "images/heart.png";
         aHeart.appendChild(img_coeur);
 
-        // Création du nom de l'élément
         const name = document.createElement("h3");
         name.textContent = item.name;
 
@@ -120,8 +116,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         div.appendChild(aHeart);
         favorisContainer.appendChild(div);
 
-        // AFFICHAGE D'UN ÉLÉMENT AU CLIC
 
+        //Gestion du clic sur un des éléments favoris
         div_img_txt.addEventListener("click", function() {
             sectionContainer.innerHTML = "";
             const element_div = document.createElement("div");
@@ -141,18 +137,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             a_favoris.addEventListener("click", function (event) {
                 event.preventDefault();
-                enelever_favoris(event);
+                enlever_favoris(event);
             });
 
             // Bouton retour
             const a_return = document.createElement("a");
             a_return.classList.add("a_return");
-            a_return.href = `/${item.category}`;
-            a_return.addEventListener("click", (event) => {
-                event.preventDefault();
-                history.pushState({ category: item.category }, "", `/${item.category}`);
-                loadCategory(categories.find((c) => c.name === item.category));
-            });
+            a_return.href = `favoris.html`;
 
             const img_in_a = document.createElement("img");
             img_in_a.src = "images/4225636.png";
@@ -162,7 +153,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             div_a.appendChild(a_favoris);
             div_a.appendChild(a_return);
 
-            // Détails de l'élément
             const elementImg = document.createElement("img");
             elementImg.src = item.image;
             elementImg.alt = item.name;
@@ -184,19 +174,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             sectionContainer.appendChild(element_div);
         });
 
-        // GESTION DE LA SUPPRESSION D'UN FAVORI
-
+        //Gestion du clic sur le bouton favori qui va enlever l'élément des favoris
         aHeart.addEventListener("click", function(event) {
-            event.preventDefault(); 
-            favorites = favorites.filter(fav => fav.name !== item.name);
-            localStorage.setItem("favorites", JSON.stringify(favorites)); 
-            alert("L'élément a été retiré de vos favoris");
+            enlever_favoris(event);
             div.remove(); 
-            location.reload();
         });
 
         // Fonction pour supprimer un favori et recharger la page
-        const enelever_favoris = (event) => {
+        const enlever_favoris = (event) => {
             event.preventDefault();
             favorites = favorites.filter(fav => fav.name !== item.name);
             localStorage.setItem("favorites", JSON.stringify(favorites));

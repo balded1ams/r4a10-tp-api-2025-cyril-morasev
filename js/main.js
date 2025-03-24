@@ -15,11 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const searchForm = document.querySelector(".search-form");
     const ul_recherche = document.querySelector(".ul_recherche");
 
-    // Création d'un conteneur pour afficher les suggestions de recherche
-    const searchResults = document.createElement("li");
-    searchResults.classList.add("search-results");
-    ul_recherche.appendChild(searchResults);
-
+    //Variable pour stocker les éléments de chaque catégorie
     let allItems = [];
     
     // Récupérer tous les éléments des catégories
@@ -48,6 +44,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             
             const filteredItems = allItems.filter(item => item.name.toLowerCase().includes(query));
             
+            //la en gros on parcoure les éléments retournés et on les affiche 
             filteredItems.forEach(item => {
                 const resultli = document.createElement("li");
                 resultli.classList.add("search-item");
@@ -58,11 +55,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                 resultli.addEventListener("click", () => {
                     history.pushState({ category: item.category, item: item.name }, "", `/${item.category}/${item.name}`);
                     loadElement(item);
-                    ul_recherche.innerHTML = ""; // Vider les résultats après sélection
+                    ul_recherche.innerHTML = ""; 
                 });
                 ul_recherche.appendChild(resultli);
             });
-        }, 300); // Attendre 300ms avant d'afficher les résultats
+            // Attendre 300ms avant d'afficher les résultats
+        }, 300); 
     });
 
     // Cacher la barre de résultats quand on clique ailleurs
@@ -72,7 +70,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-
+    //ca va afficher tous les éléments de la cataégorie souhaitée
     const loadCategory = async (category) => {
         main_section.innerHTML = "";
         const images_section = document.createElement("section");
@@ -100,8 +98,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         main_section.appendChild(images_section);
     };
 
+    //Ca va afficher toutes les infos de l'élément souhaité
     const loadElement = (item) => {
-
         const isFavorite = (name) => {
             const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
             return favorites.some(item => item.name === name);
@@ -191,6 +189,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         main_section.appendChild(element_div);
     };
 
+    //Récupérer les éléments de chaque catégorie pour les afficher + afficher les 5 premiers éléments
     await Promise.all(
     categoryNames.map(async (name) => {
         const category = new Category(name);
@@ -216,10 +215,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         category_div.appendChild(elements_container);
 
+        //On crée les li qu'on affiche sur le coté gauche du main
         const listItem = document.createElement("li");
         const a = document.createElement("a");
-        a.href = `/${name}`;
         a.textContent = name;
+        a.href = '#${name}';
+        // Empêche la mise à jour de l'URL
+        a.addEventListener("click", (event) => {
+            event.preventDefault(); 
+            const targetElement = document.getElementById(name);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: "smooth" });
+            }
+        });
         listItem.appendChild(a);
         listSection.appendChild(listItem);
 
