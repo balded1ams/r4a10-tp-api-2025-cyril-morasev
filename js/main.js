@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     
     // Récupérer tous les éléments des catégories
     await Promise.all(
-        categories.map(async (name) => {
+        categoryNames.map(async (name) => {
             const category = new Category(name);
             await category.fetchContent();
             allItems = allItems.concat(category.content);
