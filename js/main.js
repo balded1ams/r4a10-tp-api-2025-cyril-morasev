@@ -27,14 +27,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         })
     );
 
-    /*
-    //Je ne sais pas pourquoi mais nous avons un souci pour lier les deux fichiers html sur github pages, pas du tout en local mais sur github pages ca ne fonctionnait pas, donc obligé de faire cette méthode barbare, en mettant directement le lien dans cette méthode
+    //Lien statique pour résoudre les soucis des url différents pour quand on navigue entre les dfifférentes catégories et éléments
+    const basePath = window.location.origin + "/r4a10-tp-api-2025-cyril-morasev";
+
+    //obligé de faire cette méthode barbare, en mettant directement le bon url avec cette méthode
     document.querySelector(".favoris").addEventListener("click", function (event) {
         event.preventDefault(); 
-        window.location.href = window.location.origin + "/r4a10-tp-api-2025-cyril-morasev/favoris.html"; 
+        window.location.href = `${basePath}/favoris.html`;
     });
-    */
-   const basePath = window.location.origin + window.location.pathname.split('/').slice(0,2).join('/');
+    
+    document.querySelector(".logo").addEventListener("click", function (event) {
+        event.preventDefault(); 
+        window.location.href = `${basePath}/index.html`;
+    });
+    
     
 
     // Fonction pour rechercher et afficher les suggestions
@@ -262,7 +268,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Clic sur la catégorie
         category_div.addEventListener("click", () => {
-            history.pushState({ category: name }, "", `/${name}`);
+            history.pushState({ category: name }, "", `${basePath}/${name}`);
             loadCategory(category);
         });
 
