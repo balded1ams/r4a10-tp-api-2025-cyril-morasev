@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <span>${item.name}</span>
                 `;
                 resultli.addEventListener("click", () => {
-                    history.pushState({ category: item.category, item: item.name }, "", `/${item.category}/${item.name}`);
+                    history.pushState({ category: item.category, item: item.name }, "", `${basePath}/${item.category}/${item.name}`);
                     loadElement(item);
                     ul_recherche.innerHTML = ""; 
                 });
@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     description: item.description,
                     common_locations: item.common_locations,
                 });
-                imgElement.src = "images/heart.png"; 
+                imgElement.src = imagePath("heart.png");
                 alert("L'élément a été ajouté à vos favoris");
             }
             localStorage.setItem("favorites", JSON.stringify(favorites));

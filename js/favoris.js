@@ -23,6 +23,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     let allItems = [];
 
+    //Lien statique pour résoudre les soucis des url différents pour quand on navigue entre les dfifférentes catégories et éléments
+    const basePath = window.location.origin + "/r4a10-tp-api-2025-cyril-morasev";
+
     try {
         await Promise.all(
             categories.map(async (name) => {
@@ -61,9 +64,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <span>${item.name}</span>
                 `;
                 resultli.addEventListener("click", () => {
-                    history.pushState({ category: item.category, item: item.name }, "", `/${item.category}/${item.name}`);
+                    history.pushState({ category: item.category, item: item.name }, "", `${basePath}/${item.category}/${item.name}`);
                     loadElement(item);
-                    ul_recherche.innerHTML = ""; // Vider les résultats après sélection
+                    ul_recherche.innerHTML = ""; 
                 });
                 ul_recherche.appendChild(resultli);
             });
