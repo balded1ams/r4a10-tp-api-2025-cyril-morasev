@@ -27,10 +27,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         })
     );
 
+    /*
+    //Je ne sais pas pourquoi mais nous avons un souci pour lier les deux fichiers html sur github pages, pas du tout en local mais sur github pages ca ne fonctionnait pas, donc obligé de faire cette méthode barbare, en mettant directement le lien dans cette méthode
     document.querySelector(".favoris").addEventListener("click", function (event) {
-        event.preventDefault(); // Empêche l'ajout au chemin actuel
-        window.location.href = window.location.origin + "/favoris.html"; 
+        event.preventDefault(); 
+        window.location.href = window.location.origin + "/r4a10-tp-api-2025-cyril-morasev/favoris.html"; 
     });
+    */
     
 
     // Fonction pour rechercher et afficher les suggestions
