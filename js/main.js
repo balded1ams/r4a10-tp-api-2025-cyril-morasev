@@ -156,6 +156,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     image: item.image,
                     description: item.description,
                     common_locations: item.common_locations,
+                    drops: item.drops,
                 });
                 imgElement.src = imagePath("heart.png");
                 alert("L'élément a été ajouté à vos favoris");
