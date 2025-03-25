@@ -27,6 +27,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         })
     );
 
+    document.querySelector(".favoris").addEventListener("click", function (event) {
+        event.preventDefault(); // Empêche l'ajout au chemin actuel
+        window.location.href = window.location.origin + "/favoris.html"; 
+    });
+    
+
     // Fonction pour rechercher et afficher les suggestions
     let searchTimeout;
     searchInput.addEventListener("input", () => {
