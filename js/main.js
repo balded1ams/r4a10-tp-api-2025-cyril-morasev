@@ -27,13 +27,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         })
     );
 
-    
+    /*
     //Je ne sais pas pourquoi mais nous avons un souci pour lier les deux fichiers html sur github pages, pas du tout en local mais sur github pages ca ne fonctionnait pas, donc obligé de faire cette méthode barbare, en mettant directement le lien dans cette méthode
     document.querySelector(".favoris").addEventListener("click", function (event) {
         event.preventDefault(); 
         window.location.href = window.location.origin + "/r4a10-tp-api-2025-cyril-morasev/favoris.html"; 
     });
-    
+    */
+   const basePath = window.location.origin + window.location.pathname.split('/').slice(0,2).join('/');
     
 
     // Fonction pour rechercher et afficher les suggestions
@@ -99,7 +100,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             // Gérer le clic sur un élément
             div_elements.addEventListener("click", () => {
-                history.pushState({ category: category.name, item: item.name }, "", `/${category.name}/${item.name}`);
+                history.pushState({ category: category.name, item: item.name }, "", `${basePath}/${category.name}/${item.name}`);
                 loadElement(item);
             });
         });
@@ -160,11 +161,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const a_return = document.createElement("a");
         a_return.classList.add("a_return");
-        a_return.href = `/${item.category}`;
+        a_return.href = `${basePath}/${item.category}`;
 
         a_return.addEventListener("click", (event) => {
             event.preventDefault();
-            history.pushState({ category: item.category }, "", `/${item.category}`);
+            history.pushState({ category: item.category }, "", `${basePath}/${item.category}`);
             const cat = categories.find((c) => c.name === item.category);
             loadCategory(cat);
         });
@@ -284,7 +285,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     };
 
-    const path = window.location.pathname.split("/").filter(Boolean);
+    const path = window.location.pathname.replace(basePath, "").split("/").filter(Boolean);
     if (path.length === 1) {
         const cat = categories.find((c) => c.name === path[0]);
         if (cat) loadCategory(cat);
