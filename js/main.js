@@ -40,6 +40,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         event.preventDefault(); 
         window.location.href = `${basePath}/index.html`;
     });
+
+    //On va aussi utiliser basePath pour récupérer les images
+    const imagePath = (fileName) => `${basePath}/images/${fileName}`;
     
     
 
@@ -132,9 +135,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         a_favoris.href = "#";
         const img_favoris = document.createElement("img");
         if (isFavorite(item.name)) {
-            img_favoris.src = "images/heart.png";
+            img_favoris.src = imagePath("heart.png");
         } else {
-            img_favoris.src = "images/14815.png";
+            img_favoris.src = imagePath("14815.png");
         }
         img_favoris.alt = "coeur";
         a_favoris.appendChild(img_favoris);
@@ -145,7 +148,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         
             if (isFavorite(item.name)) {
                 favorites = favorites.filter(fav => fav.name !== item.name);
-                imgElement.src = "images/14815.png"; 
+                imgElement.src = imagePath("14815.png");
                 alert("L'élément a été retiré de vos favoris");
             } else {
                 favorites.push({
@@ -177,7 +180,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
         const img_in_a = document.createElement("img");
-        img_in_a.src = "images/4225636.png";
+        img_in_a.src = imagePath("4225636.png");
         img_in_a.alt = "croix";
         a_return.appendChild(img_in_a);
 
