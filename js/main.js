@@ -145,7 +145,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const toggleFavorite = (item, imgElement) => {
             let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-        
+            const dropsArray = Array.isArray(item.drops) ? item.drops : [];
+
             if (isFavorite(item.name)) {
                 favorites = favorites.filter(fav => fav.name !== item.name);
                 imgElement.src = imagePath("14815.png");
@@ -156,7 +157,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     image: item.image,
                     description: item.description,
                     common_locations: item.common_locations,
-                    drops: item.drops,
+                    drops: dropsArray,
                 });
                 imgElement.src = imagePath("heart.png");
                 alert("L'élément a été ajouté à vos favoris");
